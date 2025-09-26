@@ -55,7 +55,7 @@ function replyTalk(content: string): void {
     </div>
 
     <div class="talk-bottom">
-      <div class="tags" v-if="talk.tags">
+      <div class="tags">
         <span class="tag" v-for="tag in talk.tags">{{ tag }}</span>
         <ZRawLink class="location" v-if="talk.location" v-tip="`搜索: ${talk.location}`" :to="`${map}/${talk.location}`">
           <Icon name="i-ph:map-pin-bold" />
