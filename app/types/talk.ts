@@ -1,12 +1,13 @@
 export type TalkItem = {
-  content: String
-  date: String
-  tags?: String[]
-  location?: String
-  videoEmbed?: {
-    type: 'raw' | 'bilibili' | string
+  date: string
+  text?: string
+  images?: string[]
+  video?: {
+    type?: 'raw' | 'bilibili' | 'bilibili-nano' | 'youtube' | 'douyin' | 'douyin-wide' | 'tiktok'
     id: string
+    ratio?: string | number
     poster?: string
   }
-  images?: string | string[]
+  tags?: string[]
+  location?: string
 }
