@@ -16,8 +16,12 @@ function replyTalk(content: string): void {
   const input = document.querySelector('#twikoo .tk-input textarea')
   if (!(input instanceof HTMLTextAreaElement)) return
 
-  const quotes = content.split('\n').map(str => `> ${str}`)
-  input.value = `${quotes}\n\n`
+  if (content.trim()) {
+    const quotes = content.split('\n').map(str => `> ${str}`)
+    input.value = `${quotes}\n\n`
+  } else {
+    input.value = ''
+  }
   input.dispatchEvent(new InputEvent('input'))
 
   const length = input.value.length
