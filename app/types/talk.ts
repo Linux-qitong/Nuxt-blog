@@ -1,6 +1,6 @@
-export type TalkItem = {
-  date: string
-  text?: string
+export type TalkItem = {  
+  text: string
+  date?: string
   images?: string[]
   video?: {
     type?: 'raw' | 'bilibili' | 'bilibili-nano' | 'youtube' | 'douyin' | 'douyin-wide' | 'tiktok'

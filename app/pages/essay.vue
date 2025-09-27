@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import talks from '~/talks'
+import { getEssayDate } from '~/utils/time' 
+
+const recentTalks = [...talks]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 30)
 
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'comm-group'])
@@ -10,7 +15,7 @@ const image = 'https://bu.dusays.com/2025/02/18/67b46c6d999ea.webp'
 useSeoMeta({ title, description, ogImage: image })
 
 const { author } = useAppConfig()
-const map = 'https://www.google.com/maps/search'
+const map = 'https://www.bing.com/maps/search'
 
 function replyTalk(content: string): void {
   const input = document.querySelector('#twikoo .tk-input textarea')
@@ -34,7 +39,7 @@ function replyTalk(content: string): void {
 <ZPageBanner :title :description :image />
 
 <div class="talk-list">
-  <div class="talk-item" v-for="talk in talks">
+  <div class="talk-item" v-for="talk in recentTalks" :key="talk.date">
     <div class="talk-meta">
       <NuxtImg class="avatar" :src="author.avatar" :alt="author.name" />
       <div class="info">
@@ -42,7 +47,7 @@ function replyTalk(content: string): void {
           {{ author.name }}
           <Icon class="verified" name="i-material-symbols:verified" />
         </div>
-        <div class="date">{{ getPostDate(talk.date) }}</div>
+        <div class="date">{{ getEssayDate(talk.date) }}</div>
       </div>
     </div>
 
@@ -67,6 +72,10 @@ function replyTalk(content: string): void {
       </button>
     </div>
   </div>
+</div>
+
+<div class="talk-list-footer">
+  仅显示最近 30 条记录
 </div>
 
 <PostComment />
@@ -189,5 +198,12 @@ function replyTalk(content: string): void {
       }
     }
   }
+}
+
+.talk-list-footer {
+  color: var(--c-text-3);
+  font-size: 1rem;
+  margin: 2rem;
+  text-align: center;
 }
 </style>
