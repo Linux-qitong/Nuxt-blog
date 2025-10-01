@@ -8,7 +8,7 @@ export function useArticleIndex(path = 'posts/%') {
 		`index_${path}`,
 		() => queryCollection('content')
 			.where('stem', 'LIKE', path)
-			.select('categories', 'date', 'description', 'image', 'path', 'readingTime', 'recommend', 'title', 'type', 'updated')
+			.select('categories', 'tags', 'date', 'description', 'image', 'path', 'readingTime', 'recommend', 'title', 'type', 'updated')
 			.all(),
 		{ default: () => [] }, // 不返回 undefined
 	)
