@@ -1,18 +1,13 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
-import PageBanner from '@/components/partial/PageBanner.vue'
-import { Icon } from '@iconify/vue'
 
-const appConfig = useAppConfig()
 const layoutStore = useLayoutStore()
+layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
 
-layoutStore.setAside(['blog-stats',  'blog-site', 'blog-tech', 'blog-log', 'latest-comments'])
-
-useSeoMeta({
-    title: '友链朋友圈',
-    ogType: 'profile',
-    description: `${appConfig.title}的友链朋友圈页面。`,
-})
+const title = '博友圈'
+const description = '发现更多有趣的博主。'
+const image = 'https://bu.dusays.com/2025/02/18/67b46c6d8c9f1.webp'
+useSeoMeta({ title, description, ogImage: image })
 
 // 配置选项
 const UserConfig = reactive({
@@ -152,17 +147,13 @@ const fetchData = async () => {
 </script>
 
 <template>
-  <PageBanner 
-    image="https://bu.dusays.com/2025/02/18/67b46c6d8c9f1.webp" 
-    title="博友圈" 
-    description="发现更多有趣的博主"
-  >
+  <ZPageBanner :title :description :image>
     <div class="friend-stats">
       <div class="update-time">Updated at {{ lastUpdatedDate || '2025-07-17' }}</div>
       <div class="powered-by">Powered by FriendCircleLite</div>
     </div>
-  </PageBanner>
-  
+  </ZPageBanner>
+
   <div class="page-fcircle">
     <div class="article-list">
       <!-- 随机文章区域 -->
@@ -181,17 +172,17 @@ const fetchData = async () => {
           </a>
         </div>
         <button class="refresh-btn gradient-card" @click="refreshRandomArticle">
-          <Icon name="uim:process" size="16" />
+          <Icon name="uim:process" />
         </button>
       </div>
 
       <!-- 文章列表区域 -->
       <div class="articles-list">
-        <div 
-          v-for="(article, index) in displayedArticles" 
-          :key="article.id" 
+        <div
+          v-for="(article, index) in displayedArticles"
+          :key="article.id"
           class="article-item new-item"
-          :style="{ '--delay': index * 0.05 + 's' }"
+          :style="{ '--delay': `${(index % UserConfig.page_size) * 0.05}s` }"
         >
           <div class="article-image" @click="showAvatarPosts(article.author, article.avatar, article.link)">
             <img 
@@ -199,7 +190,7 @@ const fetchData = async () => {
               @error="handleAvatarError"
             />
           </div>
-          <a 
+          <a
             :href="article.link"
             target="_blank"
             rel="noopener noreferrer"
@@ -225,7 +216,7 @@ const fetchData = async () => {
 
       <!-- 空状态 -->
       <div v-if="!isLoading && allArticles.length === 0" class="error-container">
-        <Icon name="ph:file-text-off-bold" size="4rem" class="error-icon" />
+        <Icon class="error-icon" name="ph:file-text-bold" />
         <p>暂无文章数据</p>
         <p class="empty-hint">请稍后再试</p>
       </div>
@@ -252,7 +243,7 @@ const fetchData = async () => {
                 rel="noopener noreferrer"
                 class="author-link"
               >
-                <Icon name="lucide:external-link" size="16" />
+                <Icon name="lucide:external-link" />
               </a>
             </div>
             <div class="modal-body">
@@ -614,7 +605,6 @@ const fetchData = async () => {
   height: 400px;
   justify-content: center;
   .error-icon {
-    color: var(--c-danger);
     font-size: 4rem;
   }
 }
