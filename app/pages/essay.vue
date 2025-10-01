@@ -2,12 +2,8 @@
 import talks from '~/talks'
 import { getEssayDate } from '~/utils/time' 
 
-const recentTalks = [...talks]
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  .slice(0, 30)
-
 const layoutStore = useLayoutStore()
-layoutStore.setAside(['blog-stats', 'blog-tech', 'comm-group'])
+layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
 
 const title = '说说'
 const description = '记录生活点滴，一些想法。'
@@ -16,6 +12,10 @@ useSeoMeta({ title, description, ogImage: image })
 
 const { author } = useAppConfig()
 const map = 'https://www.bing.com/maps/search'
+
+const recentTalks = [...talks]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 30)
 
 function replyTalk(content: string): void {
   const input = document.querySelector('#twikoo .tk-input textarea')
@@ -72,10 +72,10 @@ function replyTalk(content: string): void {
       </button>
     </div>
   </div>
-</div>
 
-<div class="talk-list-footer">
-  仅显示最近 30 条记录
+  <div class="talk-footer">
+    <p>仅显示最近 30 条记录</p>
+  </div>
 </div>
 
 <PostComment />
@@ -125,13 +125,26 @@ function replyTalk(content: string): void {
         font-size: 16px;
       }
     }
-  
+
     .talk-content {
       color: var(--c-text-2);
       display: flex;
       flex-direction: column;
       gap: .5rem;
       line-height: 1.6;
+
+      :deep(a[href]) {
+        margin: -.1em -.2em;
+        padding: .1em .2em;
+        background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft)) no-repeat center bottom / 100% .1em;
+        color: var(--c-primary);
+        transition: all .2s;
+
+        &:hover {
+          border-radius: .3em;
+          background-size: 100% 100%;
+        }
+      }
 
       .images {
         display: grid;
@@ -198,12 +211,12 @@ function replyTalk(content: string): void {
       }
     }
   }
-}
 
-.talk-list-footer {
-  color: var(--c-text-3);
-  font-size: 1rem;
-  margin: 2rem;
-  text-align: center;
+  .talk-footer {
+    color: var(--c-text-3);
+    font-size: 1rem;
+    margin: 2rem 0;
+    text-align: center;
+  }
 }
 </style>
