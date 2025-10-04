@@ -4,6 +4,7 @@ const appConfig = useAppConfig()
 onMounted(() => {
   window.twikoo?.init({
     envId: appConfig.twikoo?.envId,
+    // twikoo 会把挂载后的元素变为 #twikoo
     el: '#twikoo',
   })
 })
