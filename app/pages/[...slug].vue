@@ -47,6 +47,7 @@ else {
 	/>
 
 	<PostFooter v-bind="post" />
+	<PostDonation />
 	<PostSurround />
 	<PostComment />
 </template>
