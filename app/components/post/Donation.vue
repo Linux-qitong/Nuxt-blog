@@ -38,8 +38,9 @@ const { donation } = useAppConfig()
 
     .donation-list {
       display: flex;
-      padding: .5rem 0;
+      flex-wrap: wrap;
       justify-content: center;
+      padding: .5rem 0;
       gap: 1.5rem;
     }
 
