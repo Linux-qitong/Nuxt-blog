@@ -1,6 +1,9 @@
 ---
 title: 主题
 hideInfo: true
+postfooter: false
+donation: false
+comment: false
 
 aside: [toc, github-card]
 github:
