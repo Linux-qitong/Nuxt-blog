@@ -81,7 +81,7 @@ function formatNumber(num: number) {
         <p>您好，很高兴认识您！👋</p>
         <h2>我叫 {{ author.name }}</h2>
         <p>是一名 学生、独立开发者、灵墨社区管理员、志海融新成员、博主。</p>
-        <Icon name="ph:rocket-bold" class="card-bg-icon" />
+        <Icon name="ph:user-circle-bold" class="card-bg-icon" />
       </div>
 
       <!-- 信息卡片 - 出生和年龄 -->
@@ -94,7 +94,7 @@ function formatNumber(num: number) {
           <span class="label">当前</span>
           <span class="value">16岁 <Icon name="ph:graduation-cap-bold" /></span>
         </div>
-        <Icon name="ph:calendar-blank-bold" class="card-bg-icon" />
+        <Icon name="ph:calendar-dots-bold" class="card-bg-icon" />
       </div>
 
       <!-- 座右铭卡片 -->
@@ -102,7 +102,7 @@ function formatNumber(num: number) {
         <span class="label">座右铭</span>
         <p>越努力</p>
         <p>越幸运</p>
-        <Icon name="ph:heart-bold" class="card-bg-icon" />
+        <Icon name="ph:compass-bold" class="card-bg-icon" />
       </div>
 
       <!-- 关注偏好卡片 -->
@@ -110,7 +110,7 @@ function formatNumber(num: number) {
         <span class="label">关注偏好</span>
         <h3>资源分享</h3>
         <p>小说、PC游戏</p>
-        <Icon name="ph:desktop-tower-bold" class="card-bg-icon" />
+        <Icon name="ph:star-bold" class="card-bg-icon" />
       </div>
 
       <!-- 音乐偏好卡片 -->
@@ -129,7 +129,7 @@ function formatNumber(num: number) {
           <span class="value-small">ENTJ-T</span>
         </div>
         <ProseA class="card-link" href="https://www.16personalities.com">在 16 Personalities 了解更多</ProseA>
-        <Icon name="ph:user-focus-bold" class="card-bg-icon" />
+        <Icon name="ph:brain-bold" class="card-bg-icon" />
       </div>
 
       <!-- 特长卡片 -->
@@ -141,7 +141,7 @@ function formatNumber(num: number) {
         <p class="specialty-text">
           学习能力 <span class="highlight">MAX</span>
         </p>
-        <Icon name="ph:game-controller-bold" class="card-bg-icon" />
+        <Icon name="ph:magic-wand-bold" class="card-bg-icon" />
       </div>
 
       <!-- 联系方式卡片 -->
