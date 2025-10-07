@@ -11,7 +11,6 @@ const image = 'https://bu.dusays.com/2025/02/18/67b46c6d999ea.webp'
 useSeoMeta({ title, description, ogImage: image })
 
 const { author } = useAppConfig()
-const map = 'https://www.bing.com/maps/search'
 
 const recentTalks = [...talks]
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -61,14 +60,22 @@ function replyTalk(content: string): void {
 
     <div class="talk-bottom">
       <div class="tags">
-        <span class="tag" v-for="tag in talk.tags">{{ tag }}</span>
-        <ZRawLink class="location" v-if="talk.location" v-tip="`搜索: ${talk.location}`" :to="`${map}/${talk.location}`">
-          <Icon name="i-ph:map-pin-bold" />
-          {{ talk.location }}
+        <span class="tag" v-for="tag in talk.tags">
+          <Icon name="ph:tag-bold" />
+          <span>{{ tag }}</span>
+        </span>
+        <ZRawLink
+          class="location"
+          v-if="talk.location"
+          v-tip="`搜索: ${talk.location}`"
+          :to="`https://bing.com/maps?q=${encodeURIComponent(talk.location)}`"
+        >
+          <Icon name="ph:map-pin-bold" />
+          <span>{{ talk.location }}</span>
         </ZRawLink>
       </div>
       <button class="comment-btn" v-tip="'评论'" @click="replyTalk(talk.text)">
-        <Icon name="i-ph:chats-bold" />
+        <Icon name="ph:chats-bold" />
       </button>
     </div>
   </div>
@@ -190,11 +197,12 @@ function replyTalk(content: string): void {
       }
 
       .tag, .location {
-        background-color: var(--c-bg-2);
-        border-radius: 4px;
-        cursor: pointer;
         display: flex;
         padding: 2px 4px;
+        border-radius: 4px;
+        background-color: var(--c-bg-2);
+        align-items: center;
+        cursor: pointer;
         transition: all .2s;
 
         &:hover {
@@ -202,8 +210,8 @@ function replyTalk(content: string): void {
         }
       }
 
-      .tag::before {
-        content: "🏷️";
+      .tag .i-ph\:tag-bold + * {
+        margin-left: .15em;
       }
 
       .location {
