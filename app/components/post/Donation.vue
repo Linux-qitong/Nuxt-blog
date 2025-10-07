@@ -34,14 +34,14 @@ const { donation } = useAppConfig()
 
   .donation-content {
     text-align: center;
-    padding: .6rem;
+    padding: .5rem .6rem;
 
     .donation-list {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
       padding: .5rem 0;
       gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .donation-item {
@@ -64,9 +64,13 @@ const { donation } = useAppConfig()
     }
   }
 
-  :deep(.tippy-box) {
-    border: 1px solid var(--c-border);
-    background-color: var(--c-bg-2);
+  :deep([data-tippy-root]) {
+    max-width: calc(100% - 1rem);
+
+    .tippy-box {
+      border: 1px solid var(--c-border);
+      background-color: var(--c-bg-2);
+    }
 
     .tippy-svg-arrow {
       fill: var(--c-bg-2);

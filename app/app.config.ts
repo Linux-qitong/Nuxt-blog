@@ -120,10 +120,4 @@ export default defineAppConfig({
 			tip: '深色模式',
 		},
 	},
-
-	donation: {
-		enable: false,
-		message: '感谢您的支持，这将激励我创作更多优质内容！',
-		items: {}
-	}
 })
