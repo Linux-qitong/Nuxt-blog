@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import talks from '~/talks'
-import { getEssayDate } from '~/utils/time' 
+import { format } from 'date-fns'
+import { dateLocale } from '~~/blog.config'
 
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
@@ -31,6 +32,18 @@ function replyTalk(content: string): void {
   const length = input.value.length
   input.setSelectionRange(length, length)
   input.focus()
+}
+
+function getEssayDate(date?: string | Date) {
+  if (!date) {
+    return ''
+  }
+  
+  if (typeof date === 'string') {
+    date = new Date(date)
+  }
+  
+  return format(date, 'yyyy-MM-dd HH:mm', { locale: dateLocale })
 }
 </script>
 
