@@ -44,15 +44,3 @@ export function timeElapse(date: Date | string, maxDepth = 2) {
 	}
 	return timeString || '刚刚'
 }
-
-export function getEssayDate(date?: string | Date) {
-  if (!date) {
-    return ''
-  }
-  
-  if (typeof date === 'string') {
-    date = new Date(date)
-  }
-  
-  return format(date, 'yyyy-MM-dd HH:mm', { locale: dateLocale })
-}
