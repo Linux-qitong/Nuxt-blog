@@ -1,9 +1,9 @@
 {
   "name": "zhilu-blog",
   "type": "module",
-  "version": "3.4.8",
+  "version": "3.4.9",
   "private": true,
-  "packageManager": "pnpm@10.18.0",
+  "packageManager": "pnpm@10.18.2",
   "homepage": "https://github.com/L33Z22L11/blog-v3",
   "scripts": {
     "prepare": "pnpm clean && pnpm build:packages",
@@ -35,7 +35,6 @@
     "abcjs": "catalog:content",
     "ci-info": "catalog:framework",
     "date-fns": "catalog:util",
-    "date-fns-tz": "catalog:util",
     "embla-carousel-autoplay": "catalog:ui",
     "embla-carousel-vue": "catalog:ui",
     "embla-carousel-wheel-gestures": "catalog:ui",
