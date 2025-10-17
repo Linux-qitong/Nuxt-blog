@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
 
 const layoutStore = useLayoutStore()
@@ -11,10 +11,8 @@ useSeoMeta({ title, description, ogImage: image })
 
 // 配置选项
 const UserConfig = reactive({
-  // 使用fcircle1中的数据链接
-  api_url: 'https://fc.linux-qitong.top/', 
-  page_size: 20,
-  error_img: "https://fastly.jsdelivr.net/gh/willow-god/Friend-Circle-Lite@latest/static/favicon.ico"
+  api_url: 'https://fc.linux-qitong.top/',
+  page_size: 20
 })
 
 // 状态管理
@@ -30,13 +28,8 @@ const articlesByAuthor = ref({})
 const lastUpdatedDate = ref('')
 
 // 计算属性
-const displayedArticles = computed(() => {
-  return allArticles.value.slice(0, displayCount.value)
-})
-
-const hasMoreArticles = computed(() => {
-  return allArticles.value.length > displayCount.value
-})
+const displayedArticles = computed(() => allArticles.value.slice(0, displayCount.value))
+const hasMoreArticles = computed(() => allArticles.value.length > displayCount.value)
 
 // 格式化日期
 const formatDate = (dateString) => {
@@ -48,16 +41,6 @@ const formatDate = (dateString) => {
     day: '2-digit'
   }).replace(/\//g, '-')
 }
-
-// 页面挂载时初始化
-onMounted(() => {
-  fetchData()
-})
-
-// 清理事件监听
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
 
 // 刷新随机文章
 const refreshRandomArticle = () => {
@@ -72,7 +55,7 @@ const loadMore = () => {
   displayCount.value += UserConfig.page_size
 }
 
-// 显示作者文章模态框
+// 模态框相关
 const showAvatarPosts = (author, avatar, articleLink) => {
   selectedAuthor.value = author
   selectedAuthorAvatar.value = avatar
@@ -80,7 +63,6 @@ const showAvatarPosts = (author, avatar, articleLink) => {
   showAvatarPopup.value = true
 }
 
-// 关闭头像弹窗
 const closeAvatarPopup = () => {
   showAvatarPopup.value = false
 }
@@ -91,15 +73,6 @@ const handleClickOutside = (event) => {
   if (popup && !popup.contains(event.target) && showAvatarPopup.value) {
     closeAvatarPopup()
   }
-}
-
-// 头像加载处理
-const avatarOrDefault = (avatar) => {
-  return avatar || UserConfig.error_img
-}
-
-const handleAvatarError = (event) => {
-  event.target.src = UserConfig.error_img
 }
 
 // 获取数据
@@ -116,14 +89,12 @@ const fetchData = async () => {
       link: item.link,
       author: item.author,
       created: item.created,
-      avatar: item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.author}`
+      avatar: item.avatar
     }))
     
     // 按作者分组
     articlesByAuthor.value = allArticles.value.reduce((acc, article) => {
-      if (!acc[article.author]) {
-        acc[article.author] = []
-      }
+      if (!acc[article.author]) acc[article.author] = []
       acc[article.author].push(article)
       return acc
     }, {})
@@ -144,79 +115,88 @@ const fetchData = async () => {
     isLoading.value = false
   }
 }
+
+// 生命周期钩子
+onMounted(() => {
+  fetchData()
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
   <ZPageBanner :title :description :image>
-    <div class="friend-stats">
-      <div class="update-time">Updated at {{ lastUpdatedDate || '2025-07-17' }}</div>
-      <div class="powered-by">Powered by FriendCircleLite</div>
+    <div class="fcircle-stats">
+      <div class="fcircle-stats__update-time">Updated at {{ lastUpdatedDate || '2025-07-17' }}</div>
+      <div class="fcircle-stats__powered-by">Powered by FriendCircleLite</div>
     </div>
   </ZPageBanner>
 
   <div class="page-fcircle">
-    <div class="article-list">
+    <div class="fcircle">
       <!-- 随机文章区域 -->
-      <div v-if="randomArticle" class="random-article">
-        <div class="random-title">随机文章</div>
+      <div v-if="randomArticle" class="fcircle__random-article">
+        <div class="fcircle__random-title">随机文章</div>
         <div class="article-item">
           <a 
             :href="randomArticle.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="article-container gradient-card"
+            class="article-item__container gradient-card"
           >
-            <span class="article-author">{{ randomArticle.author }}</span>
-            <span class="article-title">{{ randomArticle.title }}</span>
-            <span class="article-date">{{ formatDate(randomArticle.created) }}</span>
+            <span class="article-item__author">{{ randomArticle.author }}</span>
+            <span class="article-item__title">{{ randomArticle.title }}</span>
+            <span class="article-item__date">{{ formatDate(randomArticle.created) }}</span>
           </a>
         </div>
-        <button class="refresh-btn gradient-card" @click="refreshRandomArticle">
-          <Icon name="uim:process" />
-        </button>
+        <ZButton 
+          class="btn-refresh gradient-card" 
+          @click="refreshRandomArticle"
+          icon="uim:process"
+        />
       </div>
 
       <!-- 文章列表区域 -->
-      <div class="articles-list">
+      <div class="fcircle__articles">
         <div
           v-for="(article, index) in displayedArticles"
           :key="article.id"
-          class="article-item new-item"
+          class="article-item article-item--new"
           :style="{ '--delay': `${(index % UserConfig.page_size) * 0.05}s` }"
         >
-          <div class="article-image" @click="showAvatarPosts(article.author, article.avatar, article.link)">
-            <img 
-              :src="avatarOrDefault(article.avatar)" 
-              @error="handleAvatarError"
+          <div class="article-item__image" @click="showAvatarPosts(article.author, article.avatar, article.link)">
+            <NuxtImg 
+              :src="article.avatar" 
+              :alt="article.author"
+              loading="lazy"
             />
           </div>
           <a
             :href="article.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="article-container gradient-card"
+            class="article-item__container gradient-card"
           >
-            <span class="article-author">{{ article.author }}</span>
-            <span class="article-title">{{ article.title }}</span>
-            <span class="article-date">{{ formatDate(article.created) }}</span>
+            <span class="article-item__author">{{ article.author }}</span>
+            <span class="article-item__title">{{ article.title }}</span>
+            <span class="article-item__date">{{ formatDate(article.created) }}</span>
           </a>
         </div>
       </div>
 
-      <div class="load-more-container">
-        <!-- 加载更多按钮 -->
-        <button 
-          v-show="hasMoreArticles" 
-          class="load-more gradient-card" 
-          @click="loadMore"
-        >
-          加载更多
-        </button>
-      </div>
+      <!-- 加载更多按钮 -->
+      <ZButton 
+        v-show="hasMoreArticles" 
+        class="btn-load-more gradient-card"
+        @click="loadMore"
+        text="加载更多"
+      />
 
       <!-- 空状态 -->
       <div v-if="!isLoading && allArticles.length === 0" class="error-container">
-        <Icon class="error-icon" name="ph:file-text-bold" />
+        <Icon class="error-container__icon" name="ph:file-text-bold" />
         <p>暂无文章数据</p>
         <p class="empty-hint">请稍后再试</p>
       </div>
@@ -229,37 +209,38 @@ const fetchData = async () => {
           class="modal"
           @click="closeAvatarPopup"
         >
-          <div class="modal-content" @click.stop>
-            <div class="modal-header">
-              <img 
-                :src="avatarOrDefault(selectedAuthorAvatar)" 
-                @error="handleAvatarError" 
-                class="modal-avatar-img"
+          <div class="modal__content" @click.stop>
+            <div class="modal__header">
+              <NuxtImg 
+                :src="selectedAuthorAvatar" 
+                :alt="selectedAuthor"
+                loading="lazy"
+                class="modal__avatar-img"
               />
               <h3>{{ selectedAuthor }}</h3>
               <a 
                 :href="selectedArticleLink" 
                 target="_blank"
                 rel="noopener noreferrer"
-                class="author-link"
+                class="modal__author-link"
               >
                 <Icon name="lucide:external-link" />
               </a>
             </div>
-            <div class="modal-body">
+            <div class="modal__body">
               <div class="timeline">
                 <div 
                   v-for="(article, index) in articlesByAuthor[selectedAuthor].slice(0, 10)"
                   :key="article.id"
-                  class="timeline-item"
+                  class="timeline__item"
                   :style="{ '--delay': index * 0.05 + 's' }"
                 >
-                  <span class="date">{{ formatDate(article.created) }}</span>
+                  <span class="timeline__date">{{ formatDate(article.created) }}</span>
                   <a 
                     :href="article.link"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="article-title"
+                    class="timeline__title"
                     @click="closeAvatarPopup"
                   >
                     {{ article.title }}
@@ -267,10 +248,11 @@ const fetchData = async () => {
                 </div>
               </div>
             </div>
-            <div class="modal-avatar">
-              <img 
-                :src="avatarOrDefault(selectedAuthorAvatar)" 
-                @error="handleAvatarError"
+            <div class="modal__avatar">
+              <NuxtImg 
+                :src="selectedAuthorAvatar" 
+                :alt="selectedAuthor"
+                loading="lazy"
               />
             </div>
           </div>
@@ -281,12 +263,24 @@ const fetchData = async () => {
 </template>
 
 <style lang="scss" scoped>
-// 友链朋友圈样式
+/* 动画定义 */
+@keyframes pulse-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slide-in-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 主要样式 */
 .page-fcircle {
   animation: float-in .2s backwards;
   margin: 1rem;
 }
-.friend-stats {
+
+.fcircle-stats {
   align-items: flex-end;
   color: #eee;
   display: flex;
@@ -296,69 +290,58 @@ const fetchData = async () => {
   gap: .1rem;
   opacity: .7;
   text-shadow: 0 4px 5px rgba(0,0,0,.5);
-  .update-time {
-    opacity: 1;
-  }
-  .powered-by {
-    opacity: .8;
-  }
+  
+  .fcircle-stats__update-time { opacity: 1; }
+  .fcircle-stats__powered-by { opacity: .8; }
 }
-.article-list {
-  .random-article {
+
+.fcircle {
+  .fcircle__random-article {
     align-items: center;
     display: flex;
     flex-direction: row;
     gap: 10px;
     justify-content: space-between;
     margin: 1rem 0;
-    .random-title {
+    
+    .fcircle__random-title {
       font-size: 1.2rem;
       white-space: nowrap;
     }
+    
     .article-item {
       flex: 1;
       min-width: 0;
-      .article-container {
+      
+      .article-item__container {
         min-width: 0;
-        .article-title {
+        
+        .article-item__title {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
       }
     }
-    .refresh-btn {
-      align-items: center;
-      border-radius: 8px;
-      box-shadow: 0 0 0 1px var(--c-bg-soft);
-      color: var(--c-text-2);
-      cursor: pointer;
-      display: flex;
-      flex-shrink: 0;
-      height: 2.5rem;
-      justify-content: center;
-      transition: all .2s ease;
-      width: 2.5rem;
-    }
   }
-  .articles-list {
+  
+  .fcircle__articles {
     display: flex;
     flex-direction: column;
     gap: .5rem;
   }
 }
-.article-list .random-article .article-item .article-container .article-author,.article-list .random-article .article-item .article-container .article-date {
-  flex-shrink: 0;
-}
+
+/* 文章项样式 */
 .article-item {
   align-items: center;
   display: flex;
   gap: 10px;
   width: 100%;
-  &.new-item {
-    animation: float-in .2s var(--delay) backwards;
-  }
-  .article-image {
+  
+  &.article-item--new { animation: float-in .2s var(--delay) backwards; }
+  
+  .article-item__image {
     border-radius: 50%;
     box-shadow: 0 0 0 1px var(--c-bg-soft);
     display: flex;
@@ -366,16 +349,17 @@ const fetchData = async () => {
     height: 2rem;
     overflow: hidden;
     width: 2rem;
+    
     img {
       height: 100%;
-      -o-object-fit: cover;
       object-fit: cover;
       opacity: .8;
       transition: all .2s;
       width: 100%;
     }
   }
-  .article-container {
+  
+  .article-item__container {
     align-items: center;
     border-radius: 8px;
     box-shadow: 0 0 0 1px var(--c-bg-soft);
@@ -385,16 +369,16 @@ const fetchData = async () => {
     overflow: hidden;
     padding: 10px;
     width: 100%;
-    &:hover {
-      .article-title {
-        color: var(--c-text);
-      }
-    }
-    .article-author {
+    
+    &:hover .article-item__title { color: var(--c-text); }
+    
+    .article-item__author {
       color: var(--c-text-3);
       font-size: .85rem;
+      flex-shrink: 0;
     }
-    .article-title {
+    
+    .article-item__title {
       color: var(--c-text-2);
       flex: 1;
       font-size: .9375rem;
@@ -403,14 +387,37 @@ const fetchData = async () => {
       transition: color .2s;
       white-space: nowrap;
     }
-    .article-date {
+    
+    .article-item__date {
       color: var(--c-text-3);
       font-family: var(--font-monospace);
       font-size: .75rem;
+      flex-shrink: 0;
     }
   }
 }
-.load-more {
+
+/* 按钮样式 */
+.btn-refresh {
+  align-items: center;
+  background-color: unset;
+  border-radius: 8px;
+  color: var(--c-text-2);
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
+  height: 2.5rem;
+  justify-content: center;
+  transition: all .2s ease;
+  width: 2.5rem;
+  box-shadow: none; 
+  
+  &:hover { 
+    background-color: unset;
+  }
+}
+
+.btn-load-more {
   background-color: var(--ld-bg-card);
   border-radius: 8px;
   box-shadow: .1em .2em .5rem var(--ld-shadow);
@@ -420,42 +427,15 @@ const fetchData = async () => {
   margin: 1rem auto;
   padding: .75rem;
   width: 200px;
-  &:hover {
-    color: var(--c-text);
-  }
+  
+  &:hover { color: var(--c-text); }
 }
-.skeleton-avatar {
-  outline: 1px solid var(--c-border);
-}
-.skeleton-avatar,.skeleton-text {
-  animation: pulse-552a4b19 1.5s infinite;
-  background: var(--c-bg-soft);
-}
-.skeleton-text {
-  border-radius: 4px;
-  height: .875rem;
-}
-.skeleton {
-  .article-author {
-    width: 60px;
-  }
-  .article-title {
-    flex: 1;
-    margin: 0 10px;
-  }
-  .article-date {
-    width: 80px;
-  }
-}
-.skeleton-load-more {
-  animation: pulse-552a4b19 1.5s infinite;
-  background: var(--c-bg-soft);
-  box-shadow: none;
-}
+
+/* 模态框样式 */
 .modal {
   align-items: center;
-  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   top: 0;
   right: 0;
@@ -464,7 +444,8 @@ const fetchData = async () => {
   justify-content: center;
   position: fixed;
   z-index: 100;
-  .modal-content {
+  
+  .modal__content {
     background-color: var(--c-bg-a50);
     border-radius: 12px;
     box-shadow: 0 0 0 1px var(--c-bg-soft);
@@ -474,39 +455,32 @@ const fetchData = async () => {
     padding: 1.25rem;
     position: relative;
     width: 90%;
-    .modal-header {
+    
+    .modal__header {
       align-items: center;
       border-bottom: 1px solid var(--c-bg-soft);
       display: flex;
       gap: 15px;
       margin-bottom: 20px;
       padding-bottom: 15px;
-      img {
-        border-radius: 50%;
-        height: 50px;
-        -o-object-fit: cover;
-        object-fit: cover;
-        width: 50px;
-      }
-      h3 {
-        flex: 1;
-        font-size: 1.2rem;
-        margin: 0;
-      }
-      .author-link {
+      
+      img { border-radius: 50%; height: 50px; object-fit: cover; width: 50px; }
+      h3 { flex: 1; font-size: 1.2rem; margin: 0; }
+      
+      .modal__author-link {
         border-radius: 8px;
         color: var(--c-text-2);
         padding: 8px;
         transition: all .3s;
-        &:hover {
-          background: var(--c-bg-soft);
-          color: var(--c-text);
-        }
+        
+        &:hover { background: var(--c-bg-soft); color: var(--c-text); }
       }
     }
-    .modal-body {
+    
+    .modal__body {
       .timeline {
         position: relative;
+        
         &:after {
           background-color: var(--c-bg-soft);
           bottom: 0;
@@ -517,11 +491,13 @@ const fetchData = async () => {
           transform: translate(-50%);
           width: 2px;
         }
-        .timeline-item {
-          animation: slideIn-552a4b19 .3s ease-out both;
+        
+        .timeline__item {
+          animation: slide-in-up .3s ease-out both;
           color: var(--c-text-2);
           padding: 0 0 1rem 1.25rem;
           position: relative;
+          
           &:before {
             background-color: var(--c-text-2);
             border-radius: 50%;
@@ -531,35 +507,36 @@ const fetchData = async () => {
             position: absolute;
             top: .5rem;
             transform: translateY(-50%) translate(-50%);
-            transition: transform .3s ease,box-shadow .3s ease;
+            transition: transform .3s ease, box-shadow .3s ease;
             width: .5rem;
             z-index: 1;
           }
-          &:hover {
-            &:before {
-              box-shadow: 0 0 8px var(--c-text-2);
-              transform: translateY(-50%) translate(-50%) scale(1.5);
-            }
+          
+          &:hover:before {
+            box-shadow: 0 0 8px var(--c-text-2);
+            transform: translateY(-50%) translate(-50%) scale(1.5);
           }
-          .date {
+          
+          .timeline__date {
             color: var(--c-text-3);
             display: block;
             font-family: var(--font-monospace);
             font-size: .875rem;
             margin-bottom: .3rem;
           }
-          .article-title {
+          
+          .timeline__title {
             color: var(--c-text-2);
             line-height: 1.4;
             transition: color .3s;
-            &:hover {
-              color: var(--c-text);
-            }
+            
+            &:hover { color: var(--c-text); }
           }
         }
       }
     }
-    .modal-avatar {
+    
+    .modal__avatar {
       border-radius: 50%;
       bottom: 1.25rem;
       filter: blur(5px);
@@ -571,31 +548,41 @@ const fetchData = async () => {
       right: 1.25rem;
       width: 128px;
       z-index: 1;
-      img {
-        height: 100%;
-        -o-object-fit: cover;
-        object-fit: cover;
-        width: 100%;
-      }
+      
+      img { height: 100%; object-fit: cover; width: 100%; }
     }
   }
 }
 
-.modal-enter-active,.modal-enter-active .modal-content,.modal-leave-active,.modal-leave-active .modal-content {
+/* 模态框过渡 */
+.modal-enter-active,
+.modal-enter-active .modal__content,
+.modal-leave-active,
+.modal-leave-active .modal__content {
   transition: all .3s ease;
 }
-.modal-enter-from,.modal-leave-to {
+
+.modal-enter-from,
+.modal-leave-to {
   opacity: 0;
 }
-.modal-enter-from .modal-content,.modal-leave-to .modal-content {
+
+.modal-enter-from .modal__content,
+.modal-leave-to .modal__content {
   transform: translateY(-20px);
 }
-.modal-enter-to,.modal-leave-from {
+
+.modal-enter-to,
+.modal-leave-from {
   opacity: 1;
 }
-.modal-enter-to .modal-content,.modal-leave-from .modal-content {
+
+.modal-enter-to .modal__content,
+.modal-leave-from .modal__content {
   transform: translateY(0);
 }
+
+/* 错误容器 */
 .error-container {
   align-items: center;
   color: var(--c-text-2);
@@ -604,74 +591,27 @@ const fetchData = async () => {
   gap: 12px;
   height: 400px;
   justify-content: center;
-  .error-icon {
-    font-size: 4rem;
-  }
-}
-</style>
-
-<style lang="css" scoped>
-@keyframes pulse-552a4b19 {
-    0% {
-        opacity: 1
-    }
-
-    50% {
-        opacity: .5
-    }
-
-    to {
-        opacity: 1
-    }
+  
+  .error-container__icon { font-size: 4rem; }
 }
 
-@keyframes slideIn-552a4b19 {
-    0% {
-        opacity: 0;
-        transform: translateY(20px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-@keyframes float-in {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
+/* 移动端适配 */
 @media (max-width: 768px) {
-    .random-article .random-title {
-        display:none
-    }
-
-    .page-fcircle .article-item .article-container {
-        flex-wrap: wrap;
-        height: auto
-    }
-
-    .page-fcircle .article-item .article-container .article-author {
-        flex-grow: 1
-    }
-
-    .page-fcircle .article-item .article-container .article-title {
-        flex-basis: 100%;
-        order: 3;
-        white-space: normal
-    }
-
-    .page-fcircle .skeleton .article-title {
-        height: 1.75rem;
-        margin: -1px 0
-    }
+  .fcircle__random-article .fcircle__random-title { display: none; }
+  
+  .page-fcircle .article-item .article-item__container {
+    flex-wrap: wrap;
+    height: auto;
+  }
+  
+  .page-fcircle .article-item .article-item__container .article-item__author {
+    flex-grow: 1;
+  }
+  
+  .page-fcircle .article-item .article-item__container .article-item__title {
+    flex-basis: 100%;
+    order: 3;
+    white-space: normal;
+  }
 }
 </style>
