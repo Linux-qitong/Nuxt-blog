@@ -4,7 +4,7 @@ import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
 
-const title = '博友圈'
+const title = '朋友圈'
 const description = '发现更多有趣的博主。'
 const image = 'https://bu.dusays.com/2025/02/18/67b46c6d8c9f1.webp'
 useSeoMeta({ title, description, ogImage: image })
@@ -233,7 +233,7 @@ onUnmounted(() => {
                   v-for="(article, index) in articlesByAuthor[selectedAuthor].slice(0, 10)"
                   :key="article.id"
                   class="timeline__item"
-                  :style="{ '--delay': index * 0.05 + 's' }"
+                  :style="{ '--delay': (0.2 + index * 0.1) + 's' }"
                 >
                   <span class="timeline__date">{{ formatDate(article.created) }}</span>
                   <a 
@@ -493,7 +493,7 @@ onUnmounted(() => {
         }
         
         .timeline__item {
-          animation: slide-in-up .3s ease-out both;
+          animation: float-in .3s var(--delay) backwards;
           color: var(--c-text-2);
           padding: 0 0 1rem 1.25rem;
           position: relative;
