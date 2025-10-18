@@ -58,7 +58,7 @@ onUnmounted(() => {
 <template>
 <ZWidget card title="恋爱墙">
   <div style="text-align: center;">
-    <img src="/img/avatar.webp"
+    <img src="https://blog.linux-qitong.top/img/avatar.webp"
       style="width: 50px;height: 50px;vertical-align: -20px;border-radius: 50%;margin-right: 5px;margin-bottom: 5px;-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.1), 1px 1px 1px rgba(0,0,0,0.1), 1px 1px 1px rgba(0,0,0,0.1);box-shadow: 1px 1px 1px rgba(0,0,0,.1), 1px 1px 1px rgba(0,0,0,0.1), 1px 1px 1px rgba(0,0,0,0.1);border: 2px solid #fff;" />
     <Icon name="ph:lightning-fill" size="20" style="margin-left: 5px;margin-right: 5px;" class="my-face" />
     <img src="https://bu.dusays.com/2025/03/14/67d3e8d22e62e.webp"
