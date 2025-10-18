@@ -117,7 +117,7 @@ onMounted(() => {
     background-position: 100% 350px;
     background-repeat: no-repeat;
     background-size: contain;
-    border-color: #409eff;
+    border-color: var(--c-primary);
   }
 
   .tk-submit .tk-meta-input {
@@ -134,7 +134,7 @@ onMounted(() => {
 
   .tk-submit .tk-meta-input .el-input-group:focus-within {
     background: var(--c-bg);
-    border-color: #409eff;
+    border-color: var(--c-primary);
   }
 
   .tk-submit .tk-meta-input .el-input-group:first-child:before {
@@ -214,7 +214,7 @@ onMounted(() => {
 
   .tk-content a {
     background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft)) no-repeat bottom/100% .1em;
-    color: #409eff;
+    color: var(--c-primary);
     margin: 0 -.1em;
     padding: 0 .1em;
     transition: all .2s;
@@ -245,15 +245,7 @@ onMounted(() => {
 
   .tk-content .code-toolbar:before,
   .tk-content > span > pre:before {
-    background: #ff5f56;
-    border-radius: 50%;
-    box-shadow: 1.2rem 0 #ffbd2e, 2.4rem 0 #27c93f;
-    content: "";
-    height: .75rem;
-    left: .4rem;
-    position: absolute;
-    top: .4rem;
-    width: .75rem;
+    display: none;
   }
 
   .tk-content .code-toolbar pre,
@@ -278,7 +270,6 @@ onMounted(() => {
     transition: all .2s;
   }
 
-  // 评论标题
   .tk-comments-title {
     margin-bottom: 0;
   }
@@ -294,7 +285,7 @@ onMounted(() => {
   }
 
   .tk-nick-link {
-    color: #409eff;
+    color: var(--c-primary);
   }
 
   .tk-comment .tk-main .tk-meta {
