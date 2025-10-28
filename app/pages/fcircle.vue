@@ -376,6 +376,8 @@ onUnmounted(() => {
       color: var(--c-text-3);
       font-size: .85rem;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
     }
     
     .article-item__title {
@@ -386,6 +388,8 @@ onUnmounted(() => {
       text-overflow: ellipsis;
       transition: color .2s;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
     
     .article-item__date {
@@ -393,6 +397,8 @@ onUnmounted(() => {
       font-family: var(--font-monospace);
       font-size: .75rem;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
     }
   }
 }
