@@ -14,7 +14,10 @@ onMounted(() => {
 <section class="z-comment">
   <h3 class="text-creative">评论区</h3>
   <div id="twikoo">
-    <p>评论加载中...</p>
+    <div class="comment-loading">
+      <div class="loading-spinner"></div>
+      <p>评论加载中...</p>
+    </div>
   </div>
 </section>
 </template>
@@ -25,7 +28,23 @@ onMounted(() => {
   padding: 0 1rem;
 }
 
-.comment-loading p { font-size: .9rem; }
+.comment-loading {
+  color: var(--c-text-2);
+  padding: 2rem;
+  text-align: center;
+  
+  .loading-spinner {
+    animation: spin 1s linear infinite;
+    border: 3px solid var(--c-bg-3);
+    border-top-color: var(--c-primary);
+    border-radius: 50%;
+    height: 40px;
+    margin: 0 auto 1rem;
+    width: 40px;
+  }
+  
+  p { font-size: .9rem; }
+}
 
 :deep(#twikoo > :not(.tk-admin-container)) {
   .tk-submit {
@@ -48,18 +67,15 @@ onMounted(() => {
       order: 1;
       
       .el-textarea__inner {
-        background: var(--c-bg-2);
-        background-position: 100% 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
+        background-color: var(--c-bg-2);
         border: 2px solid var(--c-border);
         border-radius: 12px;
         padding: .8rem;
         transition: all .2s;
         
         &:focus {
-          background: var(--c-bg);
-          background-position: 100% 350px;
+          background-color: var(--c-bg);
+          background-position-y: 350px;
           border-color: var(--c-primary);
         }
       }
@@ -80,10 +96,7 @@ onMounted(() => {
           border-color: var(--c-primary);
           
           &:before,
-          &:after {
-            animation: fadeInTip .3s ease;
-            display: block;
-          }
+          &:after { animation: fadeInTip .3s ease; display: block; }
         }
         
         &:before {
@@ -186,7 +199,6 @@ onMounted(() => {
       color: var(--c-text-2);
       margin-bottom: .8rem;
       padding: .8rem;
-      position: relative;
       transition: all .2s;
     }
   }
@@ -245,20 +257,13 @@ onMounted(() => {
       background-color: var(--c-primary-soft);
       border-color: var(--c-primary-soft);
     }
-    
-    .dark & {
-      background-color: var(--c-primary);
-      border-color: var(--c-primary);
-      
-      &:hover {
-        background-color: var(--c-primary-soft);
-        border-color: var(--c-primary-soft);
-      }
-    }
   }
 }
 
-@keyframes spin { from { transform: rotate(0); } to { transform: rotate(1turn); } }
+@keyframes spin { 
+  0% { transform: rotate(0); }
+  to { transform: rotate(1turn); }
+}
 
 @keyframes fadeInTip {
   from { opacity: 0; transform: translate(-50%, 10px); }
