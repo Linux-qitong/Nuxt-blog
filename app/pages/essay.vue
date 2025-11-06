@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import talks from '~/talks'
-import { format } from 'date-fns'
-import { dateLocale } from '~~/blog.config'
+import { toDate } from 'date-fns-tz'
 
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
@@ -39,11 +38,16 @@ function getEssayDate(date?: string | Date) {
     return ''
   }
   
-  if (typeof date === 'string') {
-    date = new Date(date)
-  }
-  
-  return format(date, 'yyyy-MM-dd HH:mm', { locale: dateLocale })
+  const appConfig = useAppConfig()
+  return toDate(date, { timeZone: appConfig.timezone })
+    .toLocaleString(undefined, {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+    .replace(/\//g, '-') 
 }
 </script>
 
