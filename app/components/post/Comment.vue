@@ -47,6 +47,11 @@ onMounted(() => {
 }
 
 :deep(#twikoo > :not(.tk-admin-container)) {
+  .tk-avatar {
+    border-radius: 50% !important;
+    overflow: hidden;
+  }
+  
   .tk-submit {
     display: flex;
     flex-direction: column;
