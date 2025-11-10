@@ -26,6 +26,11 @@ onMounted(() => {
 .z-comment {
   margin: 2rem auto;
   padding: 0 1rem;
+  
+  h3 {
+    margin-top: 3rem;
+    font-size: 1.25rem;
+  }
 }
 
 .comment-loading {
