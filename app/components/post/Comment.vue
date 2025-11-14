@@ -53,14 +53,15 @@ onMounted(() => {
 
 :deep(#twikoo) {
 	.tk-admin-container { position: fixed; z-index: 1; }
-
 	.tk-avatar { border-radius: 50% !important; overflow: hidden; }
 
 	.tk-submit {
 		display: flex;
 		flex-direction: column;
 
-		.tk-avatar, a.tk-submit-action-icon.__markdown { display: none; }
+		.tk-avatar,
+		a.tk-submit-action-icon.__markdown { display: none; }
+
 		.tk-preview-container { margin: 0 0 .5rem 0; }
 
 		.tk-row.actions {
@@ -70,8 +71,8 @@ onMounted(() => {
 		}
 
 		.tk-input {
-			margin-bottom: .5rem;
 			order: 1;
+			margin-bottom: .5rem;
 			font-family: var(--font-monospace);
 
 			.el-textarea__inner {
@@ -195,16 +196,6 @@ onMounted(() => {
 				code { display: block; padding-top: .75rem; }
 			}
 		}
-
-		blockquote {
-			background: var(--c-bg-2);
-			border-left: 4px solid var(--c-border);
-			border-radius: 8px;
-			color: var(--c-text-2);
-			margin-bottom: .8rem;
-			padding: .8rem;
-			transition: all .2s;
-		}
 	}
 
 	.tk-comments-title, .tk-nick > strong {
@@ -270,19 +261,7 @@ onMounted(() => {
 	.tk-extras, .tk-footer { font-size: 0.7rem; color: var(--c-text-3); }
 }
 
-@keyframes spin { 0% { transform: rotate(0); } to { transform: rotate(1turn); } }
-
-@keyframes fadeInTip {
-	from { opacity: 0; transform: translate(-50%, 10px); }
-	to { opacity: 1; transform: translate(-50%); }
-}
-
-@keyframes fadeInPanel {
-	from { opacity: 0; transform: translateY(-20px); }
-	to { opacity: 1; transform: translateY(0); }
-}
-
-:deep(:where(.tk-preview-container,.tk-content)) {
+:deep(:where(.tk-preview-container, .tk-content)) {
 	pre { overflow: auto; border-radius: 0.5rem; font-size: 0.8125rem; }
 	p { margin: 0.2em 0; }
 	img { border-radius: 0.5em; }
@@ -300,12 +279,26 @@ onMounted(() => {
 	}
 
 	blockquote {
-		margin: 0.5em 0;
-		padding: 0.2em 0.5em;
-		border-inline-start: 4px solid var(--c-border);
-		border-radius: 4px;
-		background-color: var(--c-bg-2);
+		background: var(--c-bg-2);
+		border-left: 4px solid var(--c-border);
+		border-radius: 8px;
+		color: var(--c-text-2);
+		margin: 0.5rem 0 0.8rem;
+		padding: .8rem;
+		transition: all .2s;
 		font-size: 0.9rem;
 	}
+}
+
+@keyframes spin { 0% { transform: rotate(0); } to { transform: rotate(1turn); } }
+
+@keyframes fadeInTip {
+	from { opacity: 0; transform: translate(-50%, 10px); }
+	to { opacity: 1; transform: translate(-50%); }
+}
+
+@keyframes fadeInPanel {
+	from { opacity: 0; transform: translateY(-20px); }
+	to { opacity: 1; transform: translateY(0); }
 }
 </style>
