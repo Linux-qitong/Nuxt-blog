@@ -21,6 +21,9 @@ const articleSchema = z.object({
 	})).optional(),
 	draft: z.boolean().default(false),
 	permalink: z.string().optional(),
+	postfooter: z.boolean().default(true),
+	donation: z.boolean().default(true),
+	comment: z.boolean().default(true),
 
 	readingTime: z.object({
 		text: z.string(),

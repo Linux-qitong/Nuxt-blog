@@ -58,6 +58,13 @@ const blogConfig = {
 		robotsNotIndex: ['/preview', '/previews/*'],
 	},
 
+    /** 赞赏配置 */
+	donation: {
+		enable: false,
+		message: '感谢您的支持，这将激励我创作更多优质内容！',
+		items: {}
+	},
+
 	/** 博客 Atom 订阅源 */
 	feed: {
 		/** 订阅源最大文章数量 */
