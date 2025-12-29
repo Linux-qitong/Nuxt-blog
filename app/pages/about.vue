@@ -54,22 +54,17 @@ function formatNumber(num: number) {
 
 <template>
 <div class="about-page">
-  <!-- 移动端导航 -->
-  <div class="mobile-only">
-    <BlogHeader to="/" suffix="关于我" tag="h1" />
-  </div>
-
   <div class="about-content">
     <!-- 页面标题 -->
     <header class="about-header">
-      <div class="left-content">
-        <h1>关于我</h1>
-        <p>总有些事情比永恒更重要！</p>
-      </div>
-      <div class="right-content">
+      <div class="header-avatar">
         <div class="avatar-frame">
           <img :src="author.avatar" alt="作者头像" class="avatar-image">
         </div>
+      </div>
+      <div class="header-text">
+        <h1>关于我</h1>
+        <p>总有些事情比永恒更重要！</p>
       </div>
     </header>
 
@@ -205,13 +200,14 @@ function formatNumber(num: number) {
 // 页面标题
 .about-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 3rem;
   padding: 1rem 0;
-  text-align: left;
+  text-align: center;
 
-  .left-content {
+  .header-text {
     h1 {
       margin-bottom: .5rem;
       font-size: 2.5rem;
@@ -226,10 +222,11 @@ function formatNumber(num: number) {
     }
   }
 
-  .right-content {
+  .header-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 1.5rem; 
   }
 
   .avatar-frame {
@@ -244,6 +241,10 @@ function formatNumber(num: number) {
     border-radius: 50%;
     background-color: var(--c-bg-soft);
     transition: all .3s ease;
+    
+    @supports (corner-shape: squircle) {
+      corner-shape: superellipse(1.2);
+    }
   }
 
   .avatar-image {
@@ -541,7 +542,7 @@ function formatNumber(num: number) {
     margin-bottom: 2rem;
   }
   
-  .about-header .left-content {
+  .about-header .header-text {
     margin-bottom: 1.5rem;
   }
   

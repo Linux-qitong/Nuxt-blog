@@ -7,7 +7,7 @@ layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
 
 const title = '说说'
 const description = '记录生活点滴，一些想法。'
-const image = 'https://bu.dusays.com/2025/02/18/67b46c6d999ea.webp'
+const image = 'https://bu.dusays.com/2025/02/18/67b46c6d999ea.web'
 useSeoMeta({ title, description, ogImage: image })
 
 const { author } = useAppConfig()
@@ -81,7 +81,7 @@ function getEssayDate(date?: string | Date) {
           <Icon name="ph:tag-bold" />
           <span>{{ tag }}</span>
         </span>
-        <ZRawLink
+        <UtilLink
           class="location"
           v-if="talk.location"
           v-tip="`搜索: ${talk.location}`"
@@ -89,7 +89,7 @@ function getEssayDate(date?: string | Date) {
         >
           <Icon name="ph:map-pin-bold" />
           <span>{{ talk.location }}</span>
-        </ZRawLink>
+        </UtilLink>
       </div>
       <button class="comment-btn" v-tip="'评论'" @click="replyTalk(talk.text)">
         <Icon name="ph:chats-bold" />
@@ -127,9 +127,13 @@ function getEssayDate(date?: string | Date) {
       gap: 10px;
 
       .avatar {
-        border-radius: 2em;
+        border-radius: 50%;
         box-shadow: 2px 4px 1rem var(--ld-shadow);
         width: 3em;
+
+        @supports (corner-shape: squircle) {
+          corner-shape: superellipse(1.2);
+         }
       }
 
       .nick {
