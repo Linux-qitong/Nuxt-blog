@@ -2,13 +2,16 @@
 import type ArticleProps from '~/types/article'
 
 defineOptions({ inheritAttrs: false })
-defineProps<ArticleProps>()
+const props = defineProps<ArticleProps>()
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
 	title: string
 }>({ inheritAttrs: false })
 
 const appConfig = useAppConfig()
+const title = `${props.title} | ${appConfig.title}`
+const href = new URL(props.path!, appConfig.url).href
+const { copy, copied } = useCopy(href)
 </script>
 
 <template>
