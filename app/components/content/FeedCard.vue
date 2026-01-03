@@ -120,7 +120,7 @@ function getInspectStyle(src: string): CSSProperties {
 			height: 2.5rem;
 			border-radius: 50%;
 			box-shadow: 2px 4px 0.5em var(--ld-shadow);
-			background-color: white;
+			background-color: var(--ld-bg-card);
 			object-fit: cover;
 		}
 
@@ -150,7 +150,7 @@ function getInspectStyle(src: string): CSSProperties {
 // Tooltip 位于组件根部时，interactive tippy 会插入到父组件
 :deep() ~ [data-tippy-root] > .tippy-box {
 	overflow: hidden;
-	overflow: clip;
+	overflow: clip; // 需保留气泡箭头
 	padding: 0;
 
 	&[data-placement="top"] > .tippy-svg-arrow {

@@ -4,7 +4,8 @@ import type { TippyOptions } from 'vue-tippy'
 const props = defineProps<{
 	text?: string
 	tip?: string
-	icon?: string | boolean
+	/** 不需要默认图标时可以传空字符串 */
+	icon?: string
 	copy?: boolean
 	tipOptions?: TippyOptions
 }>()
