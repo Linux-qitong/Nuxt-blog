@@ -2,6 +2,7 @@ import type { NitroConfig } from 'nitropack'
 import { arch, env, version as nodeVersion, platform } from 'node:process'
 import { name as ciName, CLOUDFLARE_PAGES, GITHUB_ACTIONS, NETLIFY } from 'ci-info'
 import { pascal } from 'radash'
+import { Temporal } from 'temporal-polyfill'
 import blogConfig from './blog.config'
 import packageJson from './package.json'
 import redirectList from './redirects.json'
@@ -92,7 +93,7 @@ export default defineNuxtConfig({
 		// @keep-sorted
 		public: {
 			arch,
-			buildTime: new Date().toISOString(),
+			buildTime: Temporal.Now.zonedDateTimeISO().toString(),
 			// EdgeOne 检测暂时不可用
 			ci: env.TENCENTCLOUD_RUNENV === 'SCF' ? 'EdgeOne' : ciName || '',
 			nodeVersion,
@@ -124,6 +125,9 @@ export default defineNuxtConfig({
 
 	// @keep-sorted
 	modules: [
+		'@bikariya/image-viewer',
+		'@bikariya/modals',
+		'@bikariya/shiki',
 		'@nuxt/a11y',
 		'@nuxt/content',
 		'@nuxt/hints',
