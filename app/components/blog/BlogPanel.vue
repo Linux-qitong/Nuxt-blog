@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue'
-
 const layoutStore = useLayoutStore()
-const { asideWidgets, panelTranslate: translate } = storeToRefs(layoutStore)
-
-const panelTranslateStyle = computed<CSSProperties>(() => ({
-	transform: Object.values(translate.value).map(v => v ? `translate(${v})` : '').join(' '),
-}))
+const { asideWidgets, panelTransform } = storeToRefs(layoutStore)
 </script>
 
 <template>
+<!-- 使用 :style="{ transform: panelTransform }" 可能丢失响应性 -->
 <div
 	id="blog-panel"
 	:class="{ 'has-active': layoutStore.state !== 'none' }"
-	:style="panelTranslateStyle"
+	:style="{ '--transform': panelTransform }"
 >
 	<button
 		class="toggle-sidebar mobile-only"
@@ -46,6 +41,7 @@ const panelTranslateStyle = computed<CSSProperties>(() => ({
 	background-color: var(--c-bg-a50);
 	backdrop-filter: blur(0.5rem);
 	font-size: 1.4rem;
+	transform: var(--transform);
 	transition: transform 0.1s;
 	z-index: var(--z-index-popover);
 

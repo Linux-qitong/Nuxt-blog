@@ -7,7 +7,7 @@
 	background-color: var(--ld-bg-card);
 	transition: all 0.2s;
 
-	&:hover {
+	&.upraise:hover {
 		box-shadow: var(--box-shadow-3);
 		transform: translateY(-2px);
 	}
@@ -39,6 +39,14 @@
 	}
 }
 
+.scrollbar-hidden.scrollbar-hidden {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 // 横向滚动遮罩
 // PURE CSS MAGIC!
 .scrollcheck-x, .scrollcheck-y {
@@ -59,7 +67,7 @@
 }
 
 .scrollcheck-x {
-	--start-offset: 0px; // 如果填写 0 会在 calc() 时出错
+	--start-offset: 0em; // 如果填写 0 会在 calc() 时出错
 	--scrollbar-height: 0.5em;
 	--fadeout-width: 2em;
 
@@ -90,7 +98,7 @@
 
 .scrollcheck-y {
 	// 如果填写 0 会在 calc() 时出错
-	--top-offset: 0px;
+	--top-offset: 0em;
 	--guessed-scrollbar-width: 0.5em;
 	--fadeout-height: 2em;
 

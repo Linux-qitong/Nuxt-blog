@@ -7,8 +7,12 @@ useSeoMeta({
 	description: `${appConfig.title}的所有文章归档。`,
 })
 const birthYear = computed(() => appConfig.component.stats.birthYear)
+const showTuning = ref(false)
+const spacing = ref(0)
+const column = ref(1)
 
 const layoutStore = useLayoutStore()
+const { panelTranslate } = storeToRefs(layoutStore)
 layoutStore.setAside(['blog-stats', 'blog-log'])
 
 const { data: listRaw } = await useAsyncData('index_posts', () => useArticleIndexOptions(), { default: () => [] })
@@ -31,6 +35,14 @@ const yearlyWordCount = computed(() => {
 		return acc
 	}, {})
 })
+
+watchImmediate(showTuning, (newVal) => {
+	panelTranslate.value.archiveTuning = newVal ? '0, -3em' : undefined
+})
+
+onUnmounted(() => {
+	panelTranslate.value.archiveTuning = undefined
+})
 </script>
 
 <template>
@@ -40,12 +52,24 @@ const yearlyWordCount = computed(() => {
 		v-model:sort-order="sortOrder"
 		v-model:category="category"
 		:categories
-	/>
+	>
+		<template #secret>
+			<ZToggle
+				v-model="showTuning"
+				label="密度调节"
+			/>
+		</template>
+	</PostOrderToggle>
 
 	<section
 		v-for="[year, yearGroup] in listGrouped"
 		:key="year"
 		class="archive-group"
+		:class="{ 'hide-info': column > 1 }"
+		:style="{
+			'--archive-item-gap': `${spacing}em`,
+			'--archive-item-column': column,
+		}"
 	>
 		<div class="archive-title">
 			<h2 class="archive-year">
@@ -74,18 +98,56 @@ const yearlyWordCount = computed(() => {
 			/>
 		</TransitionGroup>
 	</section>
+
+	<div v-if="showTuning" class="archive-tuning card">
+		<ZSlider
+			v-model="spacing"
+			label="间距"
+			:spring-min="-0.4"
+			:spring-max="0.1"
+			:list="['-0.3', '0']"
+			min="-1"
+			max=".2"
+			step=".1"
+		/>
+
+		<ZSlider
+			v-model="column"
+			label="列数"
+			min="1"
+			max="8"
+		/>
+	</div>
 </div>
 </template>
 
 <style lang="scss" scoped>
 .archive {
-	margin: 1rem;
-
-	// mask-image: linear-gradient(#FFF 50%, #FFF7);
+	padding: 1rem; // 防止内部 outline 被 mask
+	mask-image: linear-gradient(#FFF 50%, #FFF7);
 }
 
 .archive-group {
 	margin: 1rem 0 3rem;
+
+	> .archive-list {
+		display: grid;
+		grid-template-columns: repeat(var(--archive-item-column), 1fr);
+		column-gap: calc((5 - var(--archive-item-column)) * 0.2em);
+	}
+
+	&.hide-info :deep(.dim-hover) {
+		display: none;
+	}
+}
+
+.archive-tuning {
+	position: sticky;
+	bottom: min(2em, 5%);
+
+	> .z-slider {
+		margin: 0.5em 0.8em;
+	}
 }
 
 .archive-title {
