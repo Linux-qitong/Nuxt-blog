@@ -1,6 +1,9 @@
 // @keep-sorted
 const services = {
 	baidu: 'https://image.baidu.com/search/down?url=',
+	/** https://webp.se/fly/ */
+	fly: 'https://fly.webp.se/?url=',
+	/** https://wsrv.nl/docs/ */
 	weserv: 'https://wsrv.nl/?url=',
 }
 
@@ -26,13 +29,13 @@ export const getGhIcon = (name = '') => getWsrvGhAvatar(name, { size: 32, mask: 
 export enum OicqAvatarSize {
 	Size1080,
 	Size40,
-	Size40a,
+	Size40_,
 	Size100,
 	Size140,
 	Size640,
-	Size40b = 40,
-	Size100a = 100,
-	Size640a = 640,
+	Size40__ = 40,
+	Size100_ = 100,
+	Size640_ = 640,
 }
 
 // https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=
@@ -40,8 +43,18 @@ export function getOicqAvatar(qq = '', size = OicqAvatarSize.Size140) {
 	return `https://q1.qlogo.cn/g?b=qq&nk=${qq}&s=${size}`
 }
 
+export enum QgroupAvatarSize {
+	Size640,
+	Size100 = 100,
+	Size640_ = 640,
+}
+
+export function getQgroupAvatar(group = '', size = QgroupAvatarSize.Size100) {
+	return `https://p.qlogo.cn/gh/${group}/${group}/${size}/`
+}
+
 interface FaviconOptions {
-	provider?: 'google' | 'duckduckgo'
+	provider?: 'google' | 'duckduckgo' | 'microlink'
 	size?: number
 }
 
@@ -52,13 +65,11 @@ export function getFavicon(domain: string, options?: FaviconOptions) {
 	return `https://unavatar.webp.se/${provider}/${domain}?w=${size}`
 }
 
-export function getImgUrl(src: string, service?: ImgService) {
+export function getImgUrl(src: string, service?: ImgService | true) {
 	if (!service)
 		return src
-	if (service === true) {
-		const autoService = getMainDomain(src) === 'github.com' ? 'weserv' : 'baidu'
-		return services[autoService] + src
-	}
+	if (service === true)
+		service = 'fly'
 	if (service in services)
 		return services[service] + src
 	return src
