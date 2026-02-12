@@ -1,44 +1,44 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
+import { Temporal } from 'temporal-polyfill'
+import blogConfig from '~~/blog.config'
 
 const laqTime = ref<HTMLElement | null>(null)
 let intervalId: number | null = null
 
-function secondToDate(second: number) {
-  if (!second) return [0, 0, 0, 0, 0]
-  const time = [0, 0, 0, 0, 0] as number[]
-  if (second >= 31536000) {
-    time[0] = parseInt((second / 31536000).toString())
-    second %= 31536000
-  }
-  if (second >= 86400) {
-    time[1] = parseInt((second / 86400).toString())
-    second %= 86400
-  }
-  if (second >= 3600) {
-    time[2] = parseInt((second / 3600).toString())
-    second %= 3600
-  }
-  if (second >= 60) {
-    time[3] = parseInt((second / 60).toString())
-    second %= 60
-  }
-  if (second > 0) {
-    time[4] = second
-  }
-  return time
-}
+const timeIntervals = [
+  { label: '年', threshold: 60 * 60 * 24 * 365.2422 },
+  { label: '天', threshold: 60 * 60 * 24 },
+  { label: '时', threshold: 60 * 60 },
+  { label: '分', threshold: 60 },
+  { label: '秒', threshold: 1 },
+]
+
+// 恋爱开始时间字符串：2023年3月23日 01:30 (UTC)
+const LOVE_START_TIME_STR = '2023-03-23T01:30:00+00:00'
 
 function setTime() {
   if (!laqTime.value) return
-  
-  const createTime = Math.round(new Date(Date.UTC(2023, 2, 23, 1, 30, 0)).getTime() / 1000)
-  const timestamp = Math.round(((new Date()).getTime() + 28800000) / 1000)
-  const currentTime = secondToDate(timestamp - createTime)
-  const currentTimeHtml = `${currentTime[0]} 年 ${currentTime[1]} 天 ${currentTime[2]} 时 ${currentTime[3]} 分 ${currentTime[4]} 秒`
-  
-  if (laqTime.value) {
+
+  try {
+    const loveStartTime = Temporal.Instant.from(LOVE_START_TIME_STR).toZonedDateTimeISO(blogConfig.timeZone)
+    const now = Temporal.Now.zonedDateTimeISO(blogConfig.timeZone)
+    const diff = now.since(loveStartTime, { largestUnit: 'second' })
+    let secondsRemaining = diff.seconds
+
+    const timeValues: number[] = []
+    for (const interval of timeIntervals) {
+      const count = Math.floor(secondsRemaining / interval.threshold)
+      timeValues.push(count)
+      secondsRemaining -= count * interval.threshold
+    }
+
+    const currentTimeHtml = `${timeValues[0]} 年 ${timeValues[1]} 天 ${timeValues[2]} 时 ${timeValues[3]} 分 ${timeValues[4]} 秒`
+
     laqTime.value.innerHTML = currentTimeHtml
+  }
+  catch (e) {
+    console.error('LoveWall time calculation error:', e)
   }
 }
 
