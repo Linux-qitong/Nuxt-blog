@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
-import { toDate } from 'date-fns-tz'
 
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
@@ -33,17 +32,10 @@ const displayedArticles = computed(() => allArticles.value.slice(0, displayCount
 const hasMoreArticles = computed(() => allArticles.value.length > displayCount.value)
 
 // 格式化日期
-const formatDate = (dateString) => {
+const formatDate = (dateString: string) => {
   if (!dateString) return ''
   
-  const appConfig = useAppConfig()
-  return toDate(dateString, { timeZone: appConfig.timezone })
-    .toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    })
-    .replace(/\//g, '-')
+  return toZdtLocaleString(dateString, 'date').replace(/\//g, '-')
 }
 
 // 刷新随机文章
