@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sort } from 'radash'
+import { orderBy } from 'es-toolkit/array'
 
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-log'])
@@ -17,7 +17,7 @@ const selectedTag = ref<string>('')
 // 计算每个标签对应的文章
 const articlesByTag = computed(() => {
 	const result: Record<string, any[]> = {}
-	const articles = sort(listRaw.value, a => new Date(a.date || 0).getTime(), true)
+	const articles = orderBy(listRaw.value, ['date'], ['desc'])
 	for (const article of articles) {
 		if (article.tags) {
 			for (const tag of article.tags) {
