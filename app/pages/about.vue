@@ -20,7 +20,7 @@ const statsData = ref({
 // 获取Umami统计数据
 onMounted(async () => {
   try {
-    const response = await $fetch<any>('https://umami.linux-qitong.top/api/stats', {
+    const response = await $fetch<any>('https://umami链接/api/stats', {
       method: 'GET',
       headers: {
         // 如果需要认证，请添加相应的headers
@@ -74,82 +74,82 @@ function formatNumber(num: number) {
       <div class="card intro-card">
         <p>您好，很高兴认识您！👋</p>
         <h2>我叫 {{ author.name }}</h2>
-        <p>是一名 学生、独立开发者、灵墨社区管理员、志海融新成员、博主。</p>
-        <Icon name="ph:user-circle-bold" class="card-bg-icon" />
+        <p>是一名 学生、独立开发者、博主。</p>
+        <Icon name="tabler:user-circle" class="card-bg-icon" />
       </div>
 
       <!-- 信息卡片 - 出生和年龄 -->
       <div class="card info-card age-card">
         <div class="info-item special-info-item">
           <span class="label">出生</span>
-          <span class="value">2009</span>
+          <span class="value">2010</span>
         </div>
         <div class="info-item special-info-item">
           <span class="label">当前</span>
-          <span class="value">16岁 <Icon name="ph:graduation-cap-bold" /></span>
+          <span class="value">15岁 <Icon name="ri:graduation-cap-line" /></span>
         </div>
-        <Icon name="ph:calendar-dots-bold" class="card-bg-icon" />
+        <Icon name="tabler:calendar-week" class="card-bg-icon" />
       </div>
 
       <!-- 座右铭卡片 -->
       <div class="card motto-card">
         <span class="label">座右铭</span>
-        <p>越努力</p>
-        <p>越幸运</p>
-        <Icon name="ph:compass-bold" class="card-bg-icon" />
+        <p>上句话</p>
+        <p>下句话</p>
+        <Icon name="tabler:compass" class="card-bg-icon" />
       </div>
 
       <!-- 关注偏好卡片 -->
       <div class="card tech-card">
         <span class="label">关注偏好</span>
-        <h3>资源分享</h3>
-        <p>小说、PC游戏</p>
-        <Icon name="ph:star-bold" class="card-bg-icon" />
+        <h3>您的爱好</h3>
+        <p>爱好1、爱好2</p>
+        <Icon name="tabler:star-filled" class="card-bg-icon" />
       </div>
 
       <!-- 音乐偏好卡片 -->
       <div class="card music-card">
         <span class="label">音乐偏好</span>
-        <h3>情歌、民谣、轻音乐</h3>
+        <h3>伤感、民谣、轻音乐</h3>
         <p>等我喜欢就听</p>
-        <Icon name="ph:music-notes-simple-bold" class="card-bg-icon" />
+        <Icon name="tabler:music" class="card-bg-icon" />
       </div>
 
       <!-- 性格卡片 -->
       <div class="card info-card personality-card">
         <span class="label">性格</span>
         <div class="content-center">
-          <span class="value">指挥官</span>
-          <span class="value-small">ENTJ-T</span>
+          <span class="value">调停者</span>
+          <span class="value-small">INFP-T</span>
         </div>
         <ProseA class="card-link" href="https://www.16personalities.com">在 16 Personalities 了解更多</ProseA>
-        <Icon name="ph:brain-bold" class="card-bg-icon" />
+        <Icon name="tabler:brain" class="card-bg-icon" />
       </div>
 
       <!-- 特长卡片 -->
       <div class="card specialty-card">
         <span class="label">特长</span>
         <p class="specialty-text">
-          Linux、社区管理专家
+          特长1、特长2
         </p>
         <p class="specialty-text">
           学习能力 <span class="highlight">MAX</span>
         </p>
-        <Icon name="ph:magic-wand-bold" class="card-bg-icon" />
+        <Icon name="tabler:wand" class="card-bg-icon" />
       </div>
 
       <!-- 联系方式卡片 -->
       <div class="card contact-card">
         <span class="label">联系我</span>
         <div class="contact-links">
-          <ZButton class="contact-link" v-tip="'邮箱'" icon="ph:envelope-simple-bold" :to="`mailto:${author.email}`" />
-          <ZButton class="contact-link" v-tip="'微信'" icon="ph:wechat-logo-bold" to="https://weixin.qq.com" />
+          <ZButton class="contact-link" v-tip="'邮箱'" icon="tabler:mail" :to="`mailto:${author.email}`" />
+          <ZButton class="contact-link" v-tip="'微信'" icon="tabler:brand-wechat" to="https://weixin.qq.com" />
           <ZButton class="contact-link" v-tip="'哔哩哔哩'" icon="ri:bilibili-fill" to="https://bilibili.com" />
-          <ZButton class="contact-link" v-tip="'Telegram'" icon="ph:telegram-logo-bold" to="https://t.me" />
-          <ZButton class="contact-link" v-tip="'Discord'" icon="ph:discord-logo-bold" to="https://discord.com" />
-          <ZButton class="contact-link" v-tip="'X'" icon="ph:x-logo-bold" to="https://x.com" />
+          <ZButton class="contact-link" v-tip="'Telegram'" icon="tabler:brand-telegram" to="https://t.me" />
+          <ZButton class="contact-link" v-tip="'Discord'" icon="tabler:brand-discord" to="https://discord.com" />
+          <ZButton class="contact-link" v-tip="'X'" icon="tabler:brand-x" to="https://x.com" />
         </div>
-        <Icon name="ph:address-book-bold" class="card-bg-icon" />
+        <Icon name="tabler:address-book" class="card-bg-icon" />
       </div>
 
       <!-- 网站统计卡片 -->
@@ -177,7 +177,7 @@ function formatNumber(num: number) {
             </div>
           </div>
         </div>
-        <Icon name="ph:chart-line-bold" class="card-bg-icon" />
+        <Icon name="tabler:chart-histogram" class="card-bg-icon" />
       </div>
     </div>
   </div>

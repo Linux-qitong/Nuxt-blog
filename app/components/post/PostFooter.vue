@@ -68,13 +68,13 @@ const { copy, copied } = useCopy(href)
 			/>
 			<ZButton
 				class="share-button"
-				icon="ph:envelope-simple-bold"
+				icon="tabler:mail"
 				v-tip="'邮件'"
 				:to="`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(href)}`"
 			/>
 			<ZButton
 				class="share-button"
-				icon="ph:link"
+				icon="tabler:link"
 				v-tip="{
 					content: copied ? '已复制链接' : '复制链接',
 					hideOnClick: false

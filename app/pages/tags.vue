@@ -75,7 +75,7 @@ function clearSelectedTag() {
 				<span class="tag-hashtag">#</span> {{ selectedTag }}
 			</h1>
 			<button class="tag-clear-btn" @click="clearSelectedTag" aria-label="返回标签云">
-				<Icon name="ph:x-circle-bold" />
+				<Icon name="tabler:circle-x" />
 			</button>
 		</div>
 		<div class="tag-selected-info">

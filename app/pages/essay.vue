@@ -6,7 +6,7 @@ layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
 
 const title = '说说'
 const description = '记录生活点滴，一些想法。'
-const image = 'https://bu.dusays.com/2025/02/18/67b46c6d999ea.webp'
+const image = 'https://图片链接'
 useSeoMeta({ title, description, ogImage: image })
 
 const { author } = useAppConfig()
@@ -75,7 +75,7 @@ function getEssayDate(date?: string | Date) {
     <div class="talk-bottom">
       <div class="tags">
         <span class="tag" v-for="tag in talk.tags">
-          <Icon name="ph:tag-bold" />
+          <Icon name="tabler:tag" />
           <span>{{ tag }}</span>
         </span>
         <UtilLink
@@ -84,12 +84,12 @@ function getEssayDate(date?: string | Date) {
           v-tip="`搜索: ${talk.location}`"
           :to="`https://bing.com/maps?q=${encodeURIComponent(talk.location)}`"
         >
-          <Icon name="ph:map-pin-bold" />
+          <Icon name="tabler:map-pin" />
           <span>{{ talk.location }}</span>
         </UtilLink>
       </div>
       <button class="comment-btn" v-tip="'评论'" @click="replyTalk(talk.text)">
-        <Icon name="ph:chats-bold" />
+        <Icon name="tabler:brand-hipchat" />
       </button>
     </div>
   </div>
@@ -228,7 +228,7 @@ function getEssayDate(date?: string | Date) {
         }
       }
 
-      .tag .i-ph\:tag-bold + * {
+      .tag .tabler-tag + * {
         margin-left: .15em;
       }
 

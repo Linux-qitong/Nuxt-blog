@@ -6,12 +6,12 @@ layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'comm-group'])
 
 const title = '朋友圈'
 const description = '发现更多有趣的博主。'
-const image = 'https://bu.dusays.com/2025/02/18/67b46c6d8c9f1.webp'
+const image = 'https://图片链接'
 useSeoMeta({ title, description, ogImage: image })
 
 // 配置选项
 const UserConfig = reactive({
-  api_url: 'https://fc.linux-qitong.top/',
+  api_url: 'https://轻量朋友圈/',
   page_size: 20
 })
 
@@ -192,7 +192,7 @@ onUnmounted(() => {
 
       <!-- 空状态 -->
       <div v-if="!isLoading && allArticles.length === 0" class="error-container">
-        <Icon class="error-container__icon" name="ph:file-text-bold" />
+        <Icon class="error-container__icon" name="tabler:file-alert" />
         <p>暂无文章数据</p>
         <p class="empty-hint">请稍后再试</p>
       </div>

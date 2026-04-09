@@ -5,7 +5,7 @@ const { donation } = useAppConfig()
 <template>
 <div class="donation" v-if="donation?.enable">
   <Tooltip :delay="200" interactive hide-on-click="toggle" max-width="">
-    <ZButton class="donate-button" icon="ph:heart-fill" text="赞赏作者" />
+    <ZButton class="donate-button" icon="tabler:heart-filled" text="赞赏作者" />
     <template #content>
       <div class="donation-content">
         <div class="donation-list" v-if="Object.keys(donation.items).length">
