@@ -1,9 +1,9 @@
 {
   "name": "clarity",
   "type": "module",
-  "version": "3.7.0-alpha.1",
+  "version": "3.7.0-alpha.3",
   "private": true,
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.33.0",
   "homepage": "https://github.com/L33Z22L11/blog-v3",
   "engines": {
     "node": ">=22.18 <23 || >=23.6 <24 || >=24",
@@ -49,13 +49,15 @@
     "minisearch": "catalog:util",
     "nuxt": "catalog:framework",
     "parse-domain": "catalog:util",
+    "pinia": "catalog:framework",
     "plain-shiki": "catalog:content",
     "shiki": "catalog:content",
     "site-config-stack": "catalog:util",
     "temporal-polyfill": "catalog:util",
     "vue": "catalog:framework",
     "vue-router": "catalog:framework",
-    "vue-tippy": "catalog:ui"
+    "vue-tippy": "catalog:ui",
+    "zod": "catalog:content"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:quality",
