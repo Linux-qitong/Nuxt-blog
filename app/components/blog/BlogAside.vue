@@ -24,6 +24,9 @@ const { widgets } = useWidgets(asideWidgets)
 
 <style lang="scss" scoped>
 #blog-aside {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 	overflow: auto;
 	padding: 0.5rem;
 	z-index: var(--z-index-popover);
@@ -39,7 +42,9 @@ const { widgets } = useWidgets(asideWidgets)
 		transform: var(--transform-end-far);
 		transition: transform 0.2s;
 
-		:deep(.blog-widget) {
+		// TODO 留 padding-bottom 避让 BlogPanel
+
+		> :deep(.blog-widget) {
 			padding: 0.5rem;
 			border-radius: 1rem;
 			box-shadow: var(--box-shadow-1), var(--box-shadow-2);

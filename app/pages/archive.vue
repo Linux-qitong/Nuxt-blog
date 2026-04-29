@@ -20,7 +20,7 @@ layoutStore.setAside(['blog-stats', 'blog-log'])
 const tuningRef = useTemplateRef('tuning-panel')
 useAvoidTarget(tuningRef, showTuning)
 
-const { data: listRaw } = await useAsyncData('index_posts', () => useArticleIndexOptions(), { default: () => [] })
+const { data: listRaw } = await useAsyncData('index_posts', () => getArticleIndexOptions(), { default: () => [] })
 const { listSorted, isAscending, sortOrder } = useArticleSort(listRaw)
 const { category, categories, listCategorized } = useCategory(listSorted)
 
@@ -95,6 +95,7 @@ function getArticleYear(article: ArticleProps) {
 				:key="article.path"
 				v-bind="article"
 				:to="article.path"
+				:show-category="column < 3"
 				:use-updated="sortOrder === 'updated'"
 				:style="getFixedDelay(index * 0.03)"
 			/>
