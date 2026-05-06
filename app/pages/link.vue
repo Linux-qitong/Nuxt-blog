@@ -7,7 +7,7 @@ const layoutStore = useLayoutStore()
 layoutStore.setAside([])
 
 const { data: postLink } = await useAsyncData(
-	'/link',
+	'content:/link',
 	() => queryCollection('content').path('/link').first(),
 )
 

@@ -6,12 +6,14 @@ import { orderBy } from 'es-toolkit/array'
 /** 获取已加载的文章内容/元信息 */
 export function useArticle(path?: MaybeRefOrGetter<string | undefined>) {
 	const route = useRoute()
-	const post = computed(() => useNuxtData<ContentCollectionItem | null | undefined>(toValue(path) ?? route.path).data.value)
+	const dataKey = computed(() => `content:${toValue(path) ?? route.path}`)
+	const post = computed(() => useNuxtData<ContentCollectionItem | null | undefined>(dataKey.value).data.value)
 
 	return {
+		dataKey,
 		post,
 		toc: computed(() => post.value?.body.toc),
-		metaSlots: computed(() => post.value?.meta.slots as { [key: string]: MetaSlotsTree }),
+		metaSlots: computed(() => post.value?.meta.slots as Record<string, MetaSlotsTree>),
 	}
 }
 

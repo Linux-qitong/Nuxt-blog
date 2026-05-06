@@ -4,7 +4,7 @@ import type { ArticleProps } from '~/types/article'
 const route = useRoute()
 
 const { data: surrounds } = await useAsyncData(
-	`surround-${route.path}`,
+	`surround:${route.path}`,
 	() => queryCollectionItemSurroundings('content', route.path, { fields: ['date', 'title', 'type'] })
 		.order('date', 'ASC')
 		.where('stem', 'LIKE', `posts/%`),

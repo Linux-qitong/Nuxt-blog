@@ -60,11 +60,13 @@ export const ciIcons: Record<string, string> = {
 const mainDomainIcons: Record<string, string> = {
 	'bilibili.com': 'ri:bilibili-fill',
 	'creativecommons.org': 'ri:creative-commons-line',
+	'feishu.cn': 'icon-park-outline:new-lark',
 	'github.com': 'ri:github-fill',
 	'github.io': 'ri:github-fill',
 	'google.cn': 'ri:google-fill',
 	'google.com': 'ri:google-fill',
 	'jd.com': 'arcticons:jd-sports',
+	'larkoffice.com': 'icon-park-outline:new-lark',
 	'microsoft.com': 'ri:microsoft-fill',
 	'netlify.app': 'simple-icons:netlify',
 	'pages.dev': 'simple-icons:cloudflare',

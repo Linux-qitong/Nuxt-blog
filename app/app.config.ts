@@ -4,7 +4,7 @@ import { Temporal } from 'temporal-polyfill'
 import blogConfig from '~~/blog.config'
 import { name, version } from '~~/package.json'
 
-// 图标查询：https://yesicon.app/ph?s=bold
+// 图标查询：https://yesicon.app/tabler
 // 图标插件：https://marketplace.visualstudio.com/items?itemName=antfu.iconify
 
 // @keep-sorted

@@ -20,7 +20,7 @@ layoutStore.setAside(['blog-stats', 'blog-log'])
 const tuningRef = useTemplateRef('tuning-panel')
 useAvoidTarget(tuningRef, showTuning)
 
-const { data: listRaw } = await useAsyncData('index_posts', () => getArticleIndexOptions(), { default: () => [] })
+const { data: listRaw } = await useAsyncData('posts:index', () => getArticleIndexOptions(), { default: () => [] })
 const { listSorted, isAscending, sortOrder } = useArticleSort(listRaw)
 const { category, categories, listCategorized } = useCategory(listSorted)
 

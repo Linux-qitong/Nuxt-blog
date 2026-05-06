@@ -5,7 +5,7 @@ const layoutStore = useLayoutStore()
 layoutStore.setAside(['toc'])
 
 const { data: post } = await useAsyncData(
-	route.path,
+	`content:${route.path}`,
 	() => queryCollection('content').path(route.path).first(),
 )
 
