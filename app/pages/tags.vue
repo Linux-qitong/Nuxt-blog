@@ -9,7 +9,7 @@ const title = '标签'
 const description = `${appConfig.title}的所有文章标签。`
 useSeoMeta({ title, description })
 
-const { data: listRaw } = await useAsyncData('index_posts', () => useArticleIndexOptions(), { default: () => [] })
+const { data: listRaw } = await useAsyncData('posts:index', () => useArticleIndexOptions(), { default: () => [] })
 
 // 选中的标签
 const selectedTag = ref<string>('')
