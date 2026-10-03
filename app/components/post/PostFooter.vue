@@ -2,13 +2,16 @@
 import type { ArticleProps } from '~/types/article'
 
 defineOptions({ inheritAttrs: false })
-defineProps<ArticleProps>()
+const props = defineProps<ArticleProps>()
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
 	title: string
 }>({ inheritAttrs: false })
 
 const appConfig = useAppConfig()
+const title = `${props.title} | ${appConfig.title}`
+const href = new URL(props.path!, appConfig.url).href
+const { copy, copied } = useCopy(href)
 </script>
 
 <template>
@@ -44,6 +47,42 @@ const appConfig = useAppConfig()
 			许可协议，转载请注明出处。
 		</p>
 	</ReuseTemplate>
+
+	<section class="share">
+		<div class="title text-creative">
+			分享文章
+		</div>
+
+		<div class="content">
+			<ZButton
+				class="share-button"
+				icon="ri:qq-line"
+				v-tip="'QQ'"
+				:to="`https://connect.qq.com/widget/shareqq/index.html?title=${encodeURIComponent(title)}&url=${encodeURIComponent(href)}`"
+			/>
+			<ZButton
+				class="share-button"
+				icon="ri:weibo-fill"
+				v-tip="'微博'"
+				:to="`https://service.weibo.com/share/share.php?title=${encodeURIComponent(title)}&url=${encodeURIComponent(href)}`"
+			/>
+			<ZButton
+				class="share-button"
+				icon="tabler:mail"
+				v-tip="'邮件'"
+				:to="`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(href)}`"
+			/>
+			<ZButton
+				class="share-button"
+				icon="tabler:link"
+				v-tip="{
+					content: copied ? '已复制链接' : '复制链接',
+					hideOnClick: false
+				}"
+				@click="copy()"
+			/>
+		</div>
+	</section>
 </div>
 </template>
 
@@ -75,5 +114,13 @@ section {
 	li {
 		margin: 0.5em 0;
 	}
+}
+
+.share-button {
+	display: inline-flex;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	border: 1px solid var(--c-border);
+	box-shadow: none;
 }
 </style>

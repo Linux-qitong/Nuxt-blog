@@ -2,6 +2,40 @@
 const appConfig = useAppConfig()
 const layoutStore = useLayoutStore()
 const searchStore = useSearchStore()
+
+const route = useRoute()
+const openMenuKeys = ref<Record<string, boolean>>({})
+
+const itemKey = (groupIndex: number, itemIndex: number) => `g${groupIndex}-i${itemIndex}`
+
+const hasSubItems = (item: any) => Boolean(item.children && item.children.length)
+
+function isActive(item: any): boolean {
+	if (item.url && item.url !== '#' && !isExtLink(item.url) && route.path === item.url)
+		return true
+
+	if (item.children?.length)
+		return item.children.some(isActive)
+
+	return false
+}
+
+const isOpen = (key: string) => Boolean(openMenuKeys.value[key])
+
+function toggleSubMenu(key: string) {
+	openMenuKeys.value[key] = !openMenuKeys.value[key]
+}
+
+function openActiveMenus() {
+	appConfig.nav.forEach((group, groupIndex) => {
+		group.items.forEach((item, itemIndex) => {
+			if (hasSubItems(item) && isActive(item))
+				openMenuKeys.value[itemKey(groupIndex, itemIndex)] = true
+		})
+	})
+}
+
+watch(() => route.path, openActiveMenus, { immediate: true })
 </script>
 
 <template>
@@ -29,11 +63,42 @@ const searchStore = useSearchStore()
 
 			<menu>
 				<li v-for="(item, itemIndex) in group.items" :key="itemIndex">
-					<UtilLink :to="item.url" class="sidebar-nav-item">
-						<Icon :name="item.icon" />
-						<span class="nav-text">{{ item.text }}</span>
-						<Icon v-if="isExtLink(item.url)" class="external-tip" name="tabler:arrow-up-right" />
-					</UtilLink>
+					<div v-if="hasSubItems(item)">
+						<button
+							class="sidebar-nav-item sidebar-nav-item-parent"
+							:class="{ open: isOpen(itemKey(groupIndex, itemIndex)), active: isActive(item) }"
+							type="button"
+							@click="toggleSubMenu(itemKey(groupIndex, itemIndex))"
+						>
+							<span class="nav-text-wrap">
+								<Icon :name="item.icon" />
+								<span class="nav-text">{{ item.text }}</span>
+							</span>
+							<Icon :name="isOpen(itemKey(groupIndex, itemIndex)) ? 'tabler:chevron-up' : 'tabler:chevron-down'" />
+						</button>
+
+						<ul v-show="isOpen(itemKey(groupIndex, itemIndex))" class="sidebar-subnav">
+							<li v-for="(subItem, subIndex) in item.children" :key="subIndex">
+								<UtilLink
+									:to="subItem.url"
+									class="sidebar-nav-item submenu-item"
+									:class="{ 'router-link-active': isActive(subItem) }"
+								>
+									<Icon :name="subItem.icon" />
+									<span class="nav-text">{{ subItem.text }}</span>
+									<Icon v-if="isExtLink(subItem.url)" class="external-tip" name="tabler:arrow-up-right" />
+								</UtilLink>
+							</li>
+						</ul>
+					</div>
+
+					<template v-else>
+						<UtilLink :to="item.url" class="sidebar-nav-item" :class="{ 'router-link-active': isActive(item) }">
+							<Icon :name="item.icon" />
+							<span class="nav-text">{{ item.text }}</span>
+							<Icon v-if="isExtLink(item.url)" class="external-tip" name="tabler:arrow-up-right" />
+						</UtilLink>
+					</template>
 				</li>
 			</menu>
 		</template>
@@ -83,10 +148,13 @@ const searchStore = useSearchStore()
 	flex-grow: 1;
 	padding: 0 5%;
 	font-size: 0.9em;
+	font-family: var(--font-basic);
 
 	h3 {
 		margin: 2em 0 1em 1em;
-		font: inherit;
+		font-family: var(--font-basic);
+		font-size: 1em;
+		font-weight: 700;
 		color: var(--c-text-2);
 	}
 
@@ -95,42 +163,92 @@ const searchStore = useSearchStore()
 	}
 }
 
-.sidebar-nav-item {
+.sidebar-nav-item,
+.sidebar-nav-item-parent {
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
 	padding: 0.5em 1em;
 	border-radius: 0.5em;
+	font-family: var(--font-basic);
 	transition: all 0.2s;
+}
 
-	&:hover,
-	&.router-link-active {
-		background-color: var(--c-bg-soft);
-		color: var(--c-text);
-	}
+.sidebar-nav-item:not(.search-btn):hover,
+.sidebar-nav-item.router-link-active,
+.sidebar-nav-item-parent.active,
+.sidebar-nav-item-parent:hover {
+	background-color: var(--c-bg-soft);
+	color: var(--c-text);
+}
 
-	&.router-link-active::after {
-		content: "⦁";
-		width: 1em;
-		text-align: center;
-		color: var(--c-text-3);
-	}
+.sidebar-nav-item:not(.search-btn).router-link-active::after {
+	content: "⦁";
+	width: 1em;
+	text-align: center;
+	color: var(--c-text-3);
+}
 
-	> .iconify {
-		font-size: 1.5em;
-	}
+.sidebar-nav-item-parent {
+	justify-content: space-between;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	font-weight: 500;
+}
 
-	> .nav-text {
-		flex-grow: 1;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
+.sidebar-nav-item-parent .nav-text-wrap {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	flex-grow: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 
-	> .external-tip {
-		opacity: 0.5;
-		font-size: 1em;
-	}
+.sidebar-nav-item > .iconify,
+.sidebar-nav-item-parent .iconify {
+	font-size: 1.5em;
+}
+
+.sidebar-nav-item > .nav-text,
+.sidebar-nav-item-parent .nav-text {
+	flex-grow: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.sidebar-nav-item > .external-tip,
+.sidebar-nav-item-parent .external-tip {
+	opacity: 0.5;
+	font-size: 1em;
+}
+
+.sidebar-nav-item-parent.open {
+	background-color: var(--c-bg-soft);
+	color: var(--c-text);
+}
+
+.sidebar-subnav {
+	margin: 0.2em 0 0 1.2rem;
+	padding: 0;
+	list-style: none;
+}
+
+.sidebar-subnav li {
+	margin: 0.25em 0;
+}
+
+.submenu-item {
+	padding-left: 0.5em;
+	background-color: transparent;
+	font-size: 0.9em;
+}
+
+.submenu-item .iconify {
+	font-size: 1.1em;
 }
 
 .search-btn {
@@ -151,11 +269,17 @@ const searchStore = useSearchStore()
 .sidebar-footer {
 	--gap: clamp(0.5rem, 3vh, 1rem);
 
+	position: relative;
 	display: grid;
 	gap: var(--gap);
 	padding: var(--gap);
 	font-size: 0.8em;
 	text-align: center;
 	color: var(--c-text-2);
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
 }
 </style>
